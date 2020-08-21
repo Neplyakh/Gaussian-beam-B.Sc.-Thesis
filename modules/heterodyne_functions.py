@@ -30,7 +30,7 @@ def E(z, ρ, f_list=[95-6.35,95+6.35], A_0_list=[0.5,0.5], d_in=d_in, foc=foc, c
     if len(f_list)!=len(A_0_list):
         raise ValueError("frequency list and amplitude list do not match")
     # save solutions here
-    E_results=np.zeros((len(f_list),),dtype=np.complex_)
+    E_results=0
     # calculation
     for i,(f,A_0) in enumerate(zip(f_list,A_0_list)):
         ω_0_in=ω_0_in_list[min(ω_0_in_list.keys(), key=lambda x:abs(x-freq))]
@@ -44,9 +44,9 @@ def E(z, ρ, f_list=[95-6.35,95+6.35], A_0_list=[0.5,0.5], d_in=d_in, foc=foc, c
         R_=R(z_0_,z_)
         η_=η(z_0_,z_)
         k_=k(λ_)
-        E_results[i]= A_0 * np.exp(- (ρ/w_z_)**2) * np.exp(1j*k_*ρ**2/(2*R_)) * np.exp(1j*(k_*z_-η_))
+        E_results+= A_0 * np.exp(- (ρ/w_z_)**2) * np.exp(1j*k_*ρ**2/(2*R_)) * np.exp(1j*(k_*z_-η_))
 #results
-    return sum(E_results)
+    return E_results
 # function for i
 def I_cross(z, ρ, f_list=[95-6.35,95+6.35], A_0_list=[0.5,0.5], d_in=d_in, ω_0_in=ω_0_in, foc=foc, c=c,ω_0_in_list=ω_0_in_list):
     peak = abs(E(z, 0, f_list, A_0_list))**2
